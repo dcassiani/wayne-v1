@@ -2,10 +2,35 @@
 
 
 
+### - References:
+
+Github:  https://github.com/dcassiani/wayne-v1 
+
+Travis: https://travis-ci.org/github/dcassiani/wayne-v1 
+
+DockerHub: (ainda não criado)
+
+
+
+### - Quick Start:	
+
+Na raiz do projeto, executar o comando: *`mvn spring-boot:run`*
+
+Swagger-UI será iniciado em: http://localhost:8080/swagger-ui.html 
+
+As operações de teste estão nas guias de ClienteAntena e CDR
+
+Operações de Health Check (para futura implementação de recovery e escalonamento dos pods Docker) disponível em: http://localhost:8080/actuator/health
+
+
+
 ## Objetivo:
 
 - Criar a API WayneMobileV1, que faça inclusão e exclusão de CDRs, além de  inclusão de clientes, no banco de dados e antena, através de outras APIs (não especificadas), para "consumida" no aplicativo MeuVivo e "alimentada" por sistemas específicos de tecnologia e/ou engenharia das antenas.
+
 - O aplicativo MeuVivo, de apresentação baseada na fatura telefônica, fornece o relacionamento de um dado cliente. Exibe um múltiplo de planos, sendo cada plano com um múltiplo de números de celular, e com as operações de consultar fatura aberta (atual) e as fechadas (até 12 meses), saldo de consumo (ligações, Internet, e SMS), e extratos detalhados (ligações, e acesso à Internet).
+
+  
 
 ## Arquitetura:
 

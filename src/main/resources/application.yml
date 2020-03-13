@@ -1,0 +1,33 @@
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      show-details: always
+
+spring:
+  application:
+    name: wayne
+  cache:
+    cache-names: searchPhonesToActivateByHardware_query
+
+logging:
+  file: ./logs/service.log
+  pattern:
+    file: "[%d{ISO8601}] %-5level %-40.40c{1.} : %m%ex%n"
+
+servicos:
+  db-api:
+    address: http://localhost:8089
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 60000
+        loggerLevel: full
+
+server:
+  port: 80
+

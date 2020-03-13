@@ -51,6 +51,7 @@ paths:
         - clienteAntena
       summary: Atualiza status de tentativa de registro em antena de numero de celular
       description: 'Atualiza status de tentativa de registro na antena desse numero de celular no DB, indicando que o registro já foi feito, seja com sucesso ou erro'
+      operationId: phoneActivationCallback
       consumes:
         - application/json
       parameters:
@@ -59,16 +60,12 @@ paths:
           description: código chave da antena à ser atualizada
           required: true
           type: string
-        - name: state
-          in: query
-          description: código chave da antena à ser atualizada
+        - in: body
+          name: data
           required: true
-          type: string
-          enum:
-            - planning
-            - installing
-            - operating
-            - retiring
+          description: código chave da antena à ser atualizada
+          schema:
+            $ref: '#/definitions/ResourceFunction'
       responses:
         '202':
           description: successful state update
@@ -91,7 +88,7 @@ paths:
         - in: body
           name: data
           required: true
-          description: The user to create.
+          description: os dados do CDR para copiar para o DB
           schema:
             $ref: '#/definitions/UsageRequest'
       responses:
