@@ -43,9 +43,9 @@ Operações de Health Check (para futura implementação de recovery e escalonam
 - APIs Comunicantes: além de se comunicar com o MeuVivo, o WayneMobileV1 também se conecta com APIs que acessam o DB, e APIs que acessam sistemas de antenas.
 
 
-![sequenciaAntena](C:\sysmap\workspace\wayne-v1\sequenciaAntena.jpg)
+![sequenciaAntena](sequenciaAntena.jpg)
 
-![sequenciaCDR](C:\sysmap\workspace\wayne-v1\sequenciaCDR.jpg)
+![sequenciaCDR](sequenciaCDR.jpg)
 
 ## Estórias/Tarefas:
 
