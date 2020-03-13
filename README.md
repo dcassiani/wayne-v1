@@ -6,6 +6,8 @@
 
 Github:  https://github.com/dcassiani/wayne-v1 
 
+Swagger da API: https://github.com/dcassiani/wayne-v1/blob/master/codegen-config/swagger.yaml
+
 Travis: https://travis-ci.org/github/dcassiani/wayne-v1 
 
 DockerHub: (ainda não criado)
