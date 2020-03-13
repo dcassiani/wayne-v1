@@ -1,0 +1,220 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: WayneMobile
+host: 'localhost:8080'
+basePath: /wayneMobile/v1
+tags:
+  - name: clienteAntena
+    description: registro de um celular na antena
+  - name: CDR
+    description: 'informação de consumo de dados, voz, etc'
+schemes:
+  - http
+paths:
+  '/resourceFunction/{id}':
+    get:
+      tags:
+        - clienteAntena
+      summary: consulta de telefones para ser instalados na antena
+      description: 'consulta de telefones para ser instalados na antena, páginados, por id do hardware da antena'
+      operationId: searchPhonesToActivateByHardware
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: código-chave da antena à ser consultada
+          required: true
+          type: string
+        - name: state
+          in: query
+          description: status do registro dos telefones na antena que serão retornados pela consulta
+          required: true
+          type: string
+          default: newMobile
+          enum:
+            - newMobile
+        - name: q
+          in: query
+          description: 'definição de quantidade de telefones retornados pelos parametros de consulta, separados por itens por página e qual página'
+          default: 10-1
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ResourceFunctionResponse'
+    patch:
+      tags:
+        - clienteAntena
+      summary: Atualiza status de tentativa de registro em antena de numero de celular
+      description: 'Atualiza status de tentativa de registro na antena desse numero de celular no DB, indicando que o registro já foi feito, seja com sucesso ou erro'
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: código chave da antena à ser atualizada
+          required: true
+          type: string
+        - name: state
+          in: query
+          description: código chave da antena à ser atualizada
+          required: true
+          type: string
+          enum:
+            - planning
+            - installing
+            - operating
+            - retiring
+      responses:
+        '202':
+          description: successful state update
+        '412':
+          description: precondition failed - invalid data
+        '501':
+          description: not implemented - system dependency failed to answer
+  /usage:
+    post:
+      tags:
+        - CDR
+      summary: grava CDR enviado e retorno seu identificador
+      description: grava CDR enviado e retorno chave identificadora gerada em nas bases para esse CDR
+      operationId: createCDR
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: data
+          required: true
+          description: The user to create.
+          schema:
+            $ref: '#/definitions/UsageRequest'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/UsageResponse'
+        '412':
+          description: precondition failed - invalid data
+        '501':
+          description: not implemented - system dependency failed to answer
+  '/usage/{id}':
+    delete:
+      tags:
+        - CDR
+      summary: Apaga CDR da antena
+      description: 'For valid response '
+      operationId: deleteCDRbyId
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id da antena que pertence o CDR enviado
+          required: true
+          type: string
+        - name: cdr
+          in: query
+          description: array de ids de CDRs dessa antena para apagar
+          required: true
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '412':
+          description: precondition failed - invalid data
+        '501':
+          description: not implemented - system dependency failed to answer
+definitions:
+  UsageRequest:
+    type: object
+    required:
+      - date
+      - type
+      - usageCharacteristic
+    properties:
+      date:
+        type: string
+        format: date-time
+        description: data atual da tentativa de registro do novo CDR (não coincide com as datas de uso efetivo)
+      type:
+        type: string
+        enum:
+          - VOICE
+          - SMS
+          - INTERNET
+      usageCharacteristic:
+        type: array
+        items:
+          $ref: '#/definitions/MappingValue'
+    example:
+      date: '2020-03-12T15:42:13-03:00'
+      type: VOICE
+      id: 768A76
+      usageCharacteristic:
+        - name: originatingCountryCode
+          value: 43
+        - name: originatingNumber
+          value: 11982648762
+        - name: destinationCountryCode
+          value: 43
+        - name: destinationNumber
+          value: 11982648762
+        - name: duration
+          value: 50
+        - name: unit
+          value: SEC
+        - name: startDateTime
+          value: '2020-03-12T15:41:03-03:00'
+        - name: endDateTime
+          value: '2020-03-12T15:41:53-03:00'
+  UsageResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        description: id do CDR gerado no banco de dados
+      role:
+        type: string
+        enum:
+          - CDR
+  ResourceFunctionResponse:
+    type: array
+    items:
+      $ref: '#/definitions/ResourceFunction'
+  ResourceFunction:
+    type: object
+    properties:
+      id:
+        type: string
+        description: id da antena que essa configuração pertence
+      characteristic:
+        type: array
+        items:
+          $ref: '#/definitions/MappingValue'
+    example:
+      id: 768A76
+      characteristic:
+        - name: countryCode
+          value: 43
+        - name: number
+          value: 11982648762
+        - name: state
+          value: operating
+  MappingValue:
+    type: object
+    required:
+      - name
+      - value
+    properties:
+      name:
+        type: string
+      value:
+        type: string
