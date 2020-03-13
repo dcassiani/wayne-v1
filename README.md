@@ -42,7 +42,10 @@ Operações de Health Check (para futura implementação de recovery e escalonam
 
 - APIs Comunicantes: além de se comunicar com o MeuVivo, o WayneMobileV1 também se conecta com APIs que acessam o DB, e APIs que acessam sistemas de antenas.
 
-  
+
+![sequenciaAntena](C:\sysmap\workspace\wayne-v1\sequenciaAntena.jpg)
+
+![sequenciaCDR](C:\sysmap\workspace\wayne-v1\sequenciaCDR.jpg)
 
 ## Estórias/Tarefas:
 
@@ -108,7 +111,7 @@ Operações de Health Check (para futura implementação de recovery e escalonam
 ##### Engenharia quer listar CDR no extrato e saldo de consumo para disponibilizar para Clientes 
 
 - *Definition of Ready:* será montada a operação "POST /usage", que será chamado pela sistema da antena para gravar os dados de um CDR no DB utilizado pelo MeuVivo para extratos e saldos - data, hora, local, antena, tipo de CDR (voz, sms, dados), lista de caracteristicas conforme necessário no DB (nome, valor, por exemplo duração, unidade de duração, numero de celular, id da antena, latitude da antega, longitude da antena, etc). O WayneMobileV1 então gravará no DB através das APIs de DB, e retornará para o sistema da Antena que esse CDR já foi internalizado ao DB e sob qual ID de CDR gerado, o qual o sistema da Antena deve associar ao CDR.
-- Acertar os testes unitários e os integrados para refletir (mock) a chamada pela antena e a gravação dos dados pelo DB 
+- Acertar os testes unitários e os integrados para refletir (mock) as chamada pela antena e as consultas e gravações dos dados pelo DB 
 - Desenvolver o RestController da operação "POST /usage" como implementação do ApiDelegate gerado pelo CODEGEN, que chama a classe Service
 - Desenvolver o Service que valida os metadados de características do CDR, obtém o telefone, encontra o plano e cliente associados ao telefone, e atualiza nas bases de CDR, de extrato, de saldo de consumo conforme recebido
 - Desenvolver a classe de Proxy de consulta pelo telefone  para obter o plano e cliente associados pela API do DB
